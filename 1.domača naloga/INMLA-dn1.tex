@@ -37,6 +37,7 @@
 Naloga je bila samostojno reševana s porgramom Matlab 2016a.
 
 \section{1.naloga}
+
 Prvo nalogo rešujemo s pomočjo ugrajenih funkcij numgrid in delsq. Najprej konstruiramo matriko delilnih točk, kjer so te točke v obliki plusa. To je narejeno s pomočjo funkcije numgridPlus.
 Funkciji podamo število točk na katere želimo razdeliti naše območje. Število točk mora biti v obliki $k*3 +2$, saj imamo dve zunanji točki notranji del območja pa moramo enakomerno razdeliti na $3$ dele. V funkciji numgridPlus zaporedoma kličemo funkcijo numgrid('S',n+2). kjer je $n = ((k*3+2)-2)/3$. Paziti moramo da prištejemo $2$ točki saj moramo upoštevati, da numgrid('S',n+2) razdeli kvadrat na $n+2$ točk od katerih sta $2$ robni. Končni integral nato izračunamo s funkcijo integral(N,risi), kjer je $N$ število točk, ki jih podamo kot argument funkciji numgridPlus. Risi pa pove ali problem narišemo ali ne. Funkcija integral nastavi levo stran sistema s pomočjo funkcij numgridPlus in delsq. Za desno stran sistema pa vzamemo $2\cdot h^2 \cdot e_1$. Tako dobimo $U$ rešitev sistema v danem območju, da pa izračunamo integral množimo z matriko $t\cdot t'$, kjer je $t$ oblike
 $$[1,2,2, \ldots, 2,1].$$
