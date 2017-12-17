@@ -49,10 +49,9 @@ Na spodnji sliki je prikazana slika območja, ki ga dobimo pri reševanju proble
 
 \section{2.naloga}
 
-Naloga je rešena s funkcijo DLanczosPivot(A,b,x0,tol,maxit), ki dobi enake vhodne podatke, kot funkcija DLanczos. Funkcija deluje tako, da preveri ali bo trenutnem koraku diagonalni element $0$ ali blizu ničle. V tem primeru gre funkcija v vejo pivotiranja, v nasprotnem primeru pa se korak izvede enako, kot pri DLanczosu. Če je element blizu ničle moramo izvesti pivotiranje. Element prve poddiagonale matrike L $l(j)$ izračunamo, kot $u(j-1)/b(j-1)$, kjer je $u$ diagonala matrike $U$, ter $b$ naddiagonala matrike $T$. Novi $u(j)$ izračunamo kot,
-$u(j) = b(j) -l(j)*a(j)$, kjer je a idagonala matrike $T$. Novo formula za izračun vektorja $z$ se glasi $z(j) = -l(j)*z(j-1)-l(j-1)*z(j-2)$. Novi vekotr p pa izračunamo po formuli
-$p = 1/u(j)*(vz - a(j)*p-b(j)*pz)$, kjer je $vz$ novi vektor matike $V$, $pz$ pa je predzadnji vekotr matrike $P$. 
-
+Naloga je rešena s funkcijo DLanczosPivot(A,b,x0,tol,maxit), ki dobi enake vhodne podatke, kot funkcija DLanczos. Funkcija deluje tako, da na vsakem koraku pogledamo ali je potrebno pivvotiranje. Če je pivotiranje potrebno v $i$-tem koraku ponasatavimo vrednosti  na sledeči način:
+$u(j-1) = b(j-1), b(j-1) = a(j), d(j) = b(j)$, kjer je $u$ vektor diagonalnih elementov matrike $U$ iz LU razcepa, $b$ predstavlja vektor prve nad diagonale $U$, $d$ pa je vektor druge naddiagonale matrike $U$. Nato izračunamo $l(j)$, kjer je $l$ vektor elementov matrike $L$, tako da delimo staro vrednost prejšnega elementa na diagonali z novo vrednostjo elementa
+na diagonali. Na standarden način pri izvajanju LU razcepa poračunamo tudi ostale elemente pri eliminaciji in si jih shranimo na primerna mesta. Ko računamo nov element vektorja $z$ moramo paziti da upoštevamo vse potrebne elemente vekotrja $l$. V ta namen si shranjujemo ali pivotiramo ali ne, kot številko, kjer $0$ pomeni, da ne pivotiramo, naravno število $n>0$, pa pomeni da pivotiramo $n$-krat zapored. Na ta način lahko nov element vektorja $z$ poračunamo kot  $z(j) = -sum(l(j-pivot:j).*z(j-1-pivot:j-1))$. Z novimi podatki moramo na novo poračunati tudi stari vektor $p$. Novi vektor $p$ pa dobimo na sledeči način $p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz)$, kjer je $pz$ vektor $p$ iz koraka $j-2$. Podobne spremembe moramo uvesti tudi če na danem koraku ne pivotiramo, saj smo morda pivotirali v prejšnem koraku in je morda potrebno izračunati $p$ na podlagi prejšnjega in predprejšnjega vektorja. Enako pa velja tudi za izračun $z$. Po vsakem koraku nato na koncu izračunamo približek $x$ za korak $j-1$, kot $x = x + z(j-1)*pz$.
 
 \section{3.naloga}
 

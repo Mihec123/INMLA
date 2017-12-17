@@ -94,11 +94,19 @@ for j = 2:maxit
         b(j) = d(j-1) - l(j)*d(j);
         d(j-1) = d(j);
         z(j-1) = 0;
-        z(j) = -sum(l(j-pivot:j).*z(j-1-pivot:j-1));
-        p = 1/u(j-1)*(vp - b(j-2)*pz);
-        pztemp = p;
-        p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
-        pz = pztemp;
+        if j > 2
+            z(j) = -sum(l(j-pivot:j).*z(j-1-pivot:j-1));
+            p = 1/u(j-1)*(vp - b(j-2)*pz);
+            pztemp = p;
+            p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
+            pz = pztemp;
+        else
+            z(j) = -l(j).*z(j-1);
+            p = 1/u(j-1)*(vp);
+            pztemp = p;
+            p = 1/u(j)*(vz - b(j-1)*p);
+            pz = pztemp;
+        end
         vp = vz;
         vz = w/d(j);
     end
