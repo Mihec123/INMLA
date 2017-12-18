@@ -1,6 +1,7 @@
 function [casi,ost,koraki,konvergenca] = test1374(napaka,N)
-%UNTITLED Summary of this function goes here
-% brez posebne oblike
+%Funkcija izracuna priblizek x za sistem A*x=b za A je rajat25 z metodami
+%gmres(0),bicg,qmr,bicgstab, ter vnre njihove casovne
+%zahtevnosti, stevilo korakov, ostanke in ali je metoda skonvergirala
 
 load('1374')
 A = Problem.A;

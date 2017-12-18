@@ -118,6 +118,6 @@ S pomočjo funkcije ocena določimo optimalen $\alpha$, pri katerem želimo rač
 
 Vidimo, da se optimalen $\alpha$ nahaja okoli $0.7$, saj so ostanki dobri časovna zahtevnost pa je tam majhna. Ko izberemo $\alpha$ poženemo funkcijo RegularizacijaInverz(B,test,20489,razlika,100), kjer je B funkcija množenja matrike pri danem $\alpha$, test je matrika s katero hočemo množiti, $20489$ je velikost matrike train, razlika je zahtevana natančnost, $100$ pa je število korakov posamezne metode pcg. Funkcija deluje tako, da za vsak enotski vektor izračuna inverzni stolpec matrike B, ki ga pomnoži z test' in ga shrani v začasni matriki. V vsakem koraku izračuna še razliko
 $$||train*train'*inverznispolpec(i) - e_i||_{\infty}.$$
-Ostanek je potem največja od teh razlik. Končna rešitev se nahaja v datoteki $resitev.mat$, kjer je bil izbran $\alpha=0.7$. Dodana pa je tudi rešitev $resitev1.mat$, kjer je bil izbran $\alpha=0.3$.
+Ostanek je potem največja od teh razlik. Končna rešitev se nahaja v datoteki $resitev.mat$, kjer je bil izbran $\alpha=0.7$. Dodana pa je tudi rešitev $resitev1.mat$, kjer je bil izbran $\alpha=0.2$.
 
 \end{document}

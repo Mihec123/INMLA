@@ -1,6 +1,7 @@
 function [casi,ost,koraki,konvergenca] = test1311(napaka,N)
-%UNTITLED Summary of this function goes here
-% simetricna pozitivno definitna
+%Funkcija izracuna priblizek x za sistem A*x=b za A je gridgena z metodami
+%gmres(0),minres,bicg,qmr,symmlq,pcg,bicgstab, ter vnre njihove casovne
+%zahtevnosti, stevilo korakov, ostanke in ali je metoda skonvergirala
 
 load('1311')
 A = Problem.A;

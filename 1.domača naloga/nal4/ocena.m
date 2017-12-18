@@ -1,22 +1,20 @@
-function [ostanki,koraki,cas] = ocena(X,A,b,alfa,razlika,N)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [ostanki,koraki,cas] = ocena(A,b,alfa,razlika,N)
+%funkcija izra?una x za posamezne alfa podane v funkciji A
+%Kot rezultat dobimo casovno zahtevnost, stevilo korakov, velikost ostanka
+%od resitve norm(A(x,0)-b,Inf)
 n = length(alfa);
 ostanki = zeros(n,1);
 koraki = zeros(n,1);
 cas = zeros(n,1);
 
-T = X*X';
-y = T\b;
-display('konec racunanja tocne resitve')
-
+C = @(x) A(x,0);
 
 for i=1:length(alfa)
     B=@(x) A(x,alfa(i));
     tic;
     [x,flag,ostanek,stevilo] = pcg(B,b,razlika,N);
     cas1 = toc;
-    ostanki(i)=norm(y-x,Inf);
+    ostanki(i)=norm(C(x)-b,Inf);
     koraki(i)=stevilo;
     cas(i) = cas1;
 end

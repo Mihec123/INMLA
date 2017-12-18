@@ -1,6 +1,7 @@
 function [iteracije,ost,cas,konvergenca] = gmresPonovni(A,b,napaka,N,ponovni,alfa)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%Funkcija poisce resitev sistema A*x=b za razlicne velikost podprostora gmres, kjer so
+%mozni podrosoti podani v podatku ponovni. Ce je podan tudi alfa izvedemo
+%LU predpogojevanje pri parametru alfa
 lu = true;
 
 if nargin <6
