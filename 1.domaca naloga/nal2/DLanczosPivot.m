@@ -1,23 +1,24 @@
 function [x,res] = DLanczosPivot(A,b,x0,tol,maxit)
 
-% [x,res] = DLanczos(A,b,x0,tol,maxit) uporabi metodo D-Lanczos
-% za resevanje sistema Ax=b. Matrika A mora biti simetricna. Pri 
-% tem pazi, da ne shranjuje vseh vektorjev, temvec le zadnja dva
+% [x,res] = DLanczosPivot(A,b,x0,tol,maxit) uporabi metodo D-Lanczos
+% z delnim pivotiranjem za resevanje sistema Ax=b. Matrika A mora
+% biti simetricna. Pri tem pazi, da ne shranjuje vseh vektorjev,
+% temvec le zadnja dva
 %
 % Kot resitev vrne 
 % x : vektor x_k iz zadnjega koraka
 % res : vektor norm ostankov ||b-Ax_j|| za j=1,...,k  
 %
-% Algoritem se kon?a, ko je norma ostanka pod tol ali ko presežemo 
+% Algoritem se konca, ko je norma ostanka pod tol ali ko presežemo 
 % maksimalno podano število korakov 
 
-% Bor Plestenjak 2013
 
 r0 = b - A*x0;
 vz = r0/norm(r0);  % vz = zadnji vektor iz matrike V
 x = x0;
 
 pivot = 0;
+popravi=false;
 d = zeros(maxit,1);
 
 % korak j=1 naredimo loceno, ker v Matlabu nimamo indeksov 0
@@ -54,7 +55,12 @@ for j = 2:maxit
         u(j) = a(j) - l(j)*b(j-1);
         z(j) = -l(j).*z(j-1);
         temppz = p;
+        popravi = false;
         if j>2
+            if d(j-2) ~=0
+                popravi=true;
+                pzz=pz;
+            end
             p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
         else
             p = 1/u(j)*(vz - b(j-1)*p);
@@ -70,30 +76,35 @@ for j = 2:maxit
     else
         display('pivotiranje')
         tempu = u(j-1);
-        tempb = b(j-1);       
-        u(j-1) = starib;
-        starib = b(j);
+        tempb = b(j-1);  
         b(j-1) = a(j);
         d(j-1)=b(j);
         d(j) = 0;
-        l(j) = tempu/u(j-1);
+        l(j) = tempu/starib;
         u(j) = tempb - l(j)*b(j-1);
+        
         b(j) = - l(j)*b(j);
-        %d(j-1) = starib;
         z(j-1) = 0;
-        if j > 2
+        if j > 2                
             z(j) = -sum(l(max(j-pivot,2):j).*z(max(j-1-pivot,1):j-1));
-            p = 1/u(j-1)*(vp - b(j-2)*pz);
+            if popravi && j>3
+                popravi=0;
+                p = 1/starib*(vp - b(j-2)*pz-d(j-3)*pzz);
+                pzz=0;
+            else
+                p = 1/starib*(vp - b(j-2)*pz);
+            end
             pztemp = p;
             p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
-            pz = pztemp;
+            pz = pztemp;   
         else
             z(j) = -l(j).*z(j-1);
-            p = 1/u(j-1)*(vp);
+            p = 1/starib*(vp);
             pztemp = p;
             p = 1/u(j)*(vz - b(j-1)*p);
             pz = pztemp;
-        end
+        end   
+        starib = d(j-1);
         vp = vz;
         vz = w/starib;
     end
