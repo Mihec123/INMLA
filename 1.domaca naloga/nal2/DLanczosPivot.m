@@ -18,10 +18,9 @@ vz = r0/norm(r0);  % vz = zadnji vektor iz matrike V
 x = x0;
 
 pivot = 0;
-prejsni = 0;
 d = zeros(maxit,1);
 
-% korak j=1 naredimo lo?eno, ker v Matlabu nimamo indeksov 0
+% korak j=1 naredimo loceno, ker v Matlabu nimamo indeksov 0
 w = A*vz;
 a(1) = vz'*w;
 w = w - a(1)*vz;
@@ -36,37 +35,24 @@ if res(1)<tol
 end;
 vp = vz; % vp = predzadnji vektor iz matrike V
 vz = w/b(1);
+starib=b(1);
 
 % zanka za korake j>1
 for j = 2:maxit
-    if pivot ~=0
-        w = A*vz - d(j-1)*vp;
-    else
-        w = A*vz - b(j-1)*vp;
-    end
+    w = A*vz - starib*vp;
     a(j) = vz'*w;
     w = w - a(j)*vz;
     b(j) = norm(w);
-    if u(j-1) < b(j-1)
+    if u(j-1) < starib
         pivot = pivot +1;
     else
-        if pivot~=0
-            prejsni = pivot+1;
-        else
-            prejsni = pivot;
-        end
         pivot = 0;
     end
     
     if pivot == 0
-        if prejsni ~= 0
-            l(j) = spodnjib/u(j-1);
-            prejsni = 0;
-        else
-            l(j) = b(j-1)/u(j-1);
-        end
+        l(j) = starib/u(j-1);
         u(j) = a(j) - l(j)*b(j-1);
-        z(j) = -sum(l(j-prejsni:j).*z(j-1-prejsni:j-1));
+        z(j) = -l(j).*z(j-1);
         temppz = p;
         if j>2
             p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
@@ -74,28 +60,29 @@ for j = 2:maxit
             p = 1/u(j)*(vz - b(j-1)*p);
         end
         pz = temppz;
-        %x = x + z(j)*p;
         res(j) = b(j)*abs(z (j)/u(j));
         if res(j)<tol 
             return
         end;
         vp = vz;
         vz = w/b(j);
+        starib = b(j);
     else
         display('pivotiranje')
         tempu = u(j-1);
-        tempb = b(j-1);
-        u(j-1) = b(j-1);
+        tempb = b(j-1);       
+        u(j-1) = starib;
+        starib = b(j);
         b(j-1) = a(j);
-        d(j) = b(j);
+        d(j-1)=b(j);
+        d(j) = 0;
         l(j) = tempu/u(j-1);
         u(j) = tempb - l(j)*b(j-1);
-        spodnjib = b(j);
-        b(j) = d(j-1) - l(j)*d(j);
-        d(j-1) = d(j);
+        b(j) = - l(j)*b(j);
+        %d(j-1) = starib;
         z(j-1) = 0;
         if j > 2
-            z(j) = -sum(l(j-pivot:j).*z(j-1-pivot:j-1));
+            z(j) = -sum(l(max(j-pivot,2):j).*z(max(j-1-pivot,1):j-1));
             p = 1/u(j-1)*(vp - b(j-2)*pz);
             pztemp = p;
             p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
@@ -108,7 +95,7 @@ for j = 2:maxit
             pz = pztemp;
         end
         vp = vz;
-        vz = w/d(j);
+        vz = w/starib;
     end
     if j >2
         x = x + z(j-1)*pz;
