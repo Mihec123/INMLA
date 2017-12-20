@@ -1,4 +1,4 @@
-function [x,res] = DLanczosPivot(A,b,x0,tol,maxit)
+function [x,res,alfa,beta] = DLanczosPivot(A,b,x0,tol,maxit)
 
 % [x,res] = DLanczosPivot(A,b,x0,tol,maxit) uporabi metodo D-Lanczos
 % z delnim pivotiranjem za resevanje sistema Ax=b. Matrika A mora
@@ -37,6 +37,8 @@ end;
 vp = vz; % vp = predzadnji vektor iz matrike V
 vz = w/b(1);
 starib=b(1);
+alfa(1)=a(1);
+beta(1)=b(1);
 
 % zanka za korake j>1
 for j = 2:maxit
@@ -44,13 +46,19 @@ for j = 2:maxit
     a(j) = vz'*w;
     w = w - a(j)*vz;
     b(j) = norm(w);
-    if u(j-1) < starib
+    alfa(j)=a(j);
+    beta(j)=b(j);
+    if abs(u(j-1)) < abs(starib)
         pivot = pivot +1;
+        if j==2
+            prvi=true;
+        end
     else
         pivot = 0;
     end
     
     if pivot == 0
+        prvi=false;
         l(j) = starib/u(j-1);
         u(j) = a(j) - l(j)*b(j-1);
         z(j) = -l(j).*z(j-1);
@@ -82,11 +90,15 @@ for j = 2:maxit
         d(j) = 0;
         l(j) = tempu/starib;
         u(j) = tempb - l(j)*b(j-1);
+        u(j-1) = starib;
         
         b(j) = - l(j)*b(j);
         z(j-1) = 0;
-        if j > 2                
+        if j > 2
             z(j) = -sum(l(max(j-pivot,2):j).*z(max(j-1-pivot,1):j-1));
+            if prvi
+                z(j)=norm(r0);
+            end
             if popravi && j>3
                 popravi=0;
                 p = 1/starib*(vp - b(j-2)*pz-d(j-3)*pzz);
@@ -98,12 +110,14 @@ for j = 2:maxit
             p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
             pz = pztemp;   
         else
-            z(j) = -l(j).*z(j-1);
+            
+            z(j) = norm(r0);
             p = 1/starib*(vp);
             pztemp = p;
             p = 1/u(j)*(vz - b(j-1)*p);
             pz = pztemp;
-        end   
+        end
+        res(j) = b(j)*abs(z (j)/u(j));
         starib = d(j-1);
         vp = vz;
         vz = w/starib;
@@ -115,4 +129,15 @@ end
 if length(z) > 1
     x = x + z(end)*p;
 end
+% display('z')
+% z(1:j)
+% display('l')
+% l(1:j)
+% display('u')
+% u(1:j)
+% display('d')
+% d(1:j)'
+% display('b')
+% b(1:j)'
+
 end
