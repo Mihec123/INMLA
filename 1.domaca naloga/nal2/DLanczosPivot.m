@@ -1,4 +1,4 @@
-function [x,res,alfa,beta] = DLanczosPivot(A,b,x0,tol,maxit)
+function [x,res] = DLanczosPivot(A,b,x0,tol,maxit)
 
 % [x,res] = DLanczosPivot(A,b,x0,tol,maxit) uporabi metodo D-Lanczos
 % z delnim pivotiranjem za resevanje sistema Ax=b. Matrika A mora
@@ -12,13 +12,13 @@ function [x,res,alfa,beta] = DLanczosPivot(A,b,x0,tol,maxit)
 % Algoritem se konca, ko je norma ostanka pod tol ali ko presežemo 
 % maksimalno podano število korakov 
 
+maxit=min(maxit,length(b));
 
 r0 = b - A*x0;
 vz = r0/norm(r0);  % vz = zadnji vektor iz matrike V
 x = x0;
 
 pivot = 0;
-popravi=false;
 d = zeros(maxit,1);
 
 % korak j=1 naredimo loceno, ker v Matlabu nimamo indeksov 0
@@ -28,8 +28,7 @@ w = w - a(1)*vz;
 b(1) = norm(w);
 u(1) = a(1);
 z(1) = norm(r0);
-p = 1/u(1)*vz; % p = zadnji vektor iz matrike p
-x = x + z(1)*p;
+
 res(1) = b(1)*abs(z (1)/u(1));
 if res(1)<tol 
     return
@@ -37,8 +36,7 @@ end;
 vp = vz; % vp = predzadnji vektor iz matrike V
 vz = w/b(1);
 starib=b(1);
-alfa(1)=a(1);
-beta(1)=b(1);
+
 
 % zanka za korake j>1
 for j = 2:maxit
@@ -46,13 +44,9 @@ for j = 2:maxit
     a(j) = vz'*w;
     w = w - a(j)*vz;
     b(j) = norm(w);
-    alfa(j)=a(j);
-    beta(j)=b(j);
+
     if abs(u(j-1)) < abs(starib)
         pivot = pivot +1;
-        if j==2
-            prvi=true;
-        end
     else
         pivot = 0;
     end
@@ -62,24 +56,11 @@ for j = 2:maxit
         l(j) = starib/u(j-1);
         u(j) = a(j) - l(j)*b(j-1);
         z(j) = -l(j).*z(j-1);
-        temppz = p;
-        popravi = false;
-        if j>2
-            if d(j-2) ~=0
-                popravi=true;
-                pzz=pz;
-            end
-            p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
-        else
-            p = 1/u(j)*(vz - b(j-1)*p);
-        end
-        pz = temppz;
         res(j) = b(j)*abs(z (j)/u(j));
         if res(j)<tol 
             return
         end;
-        vp = vz;
-        vz = w/b(j);
+
         starib = b(j);
     else
         display('pivotiranje')
@@ -89,55 +70,39 @@ for j = 2:maxit
         d(j-1)=b(j);
         d(j) = 0;
         l(j) = tempu/starib;
-        u(j) = tempb - l(j)*b(j-1);
-        u(j-1) = starib;
-        
+        u(j) = tempb - l(j)*a(j);
+        u(j-1) = starib;     
         b(j) = - l(j)*b(j);
         z(j-1) = 0;
         if j > 2
             z(j) = -sum(l(max(j-pivot,2):j).*z(max(j-1-pivot,1):j-1));
-            if prvi
-                z(j)=norm(r0);
-            end
-            if popravi && j>3
-                popravi=0;
-                p = 1/starib*(vp - b(j-2)*pz-d(j-3)*pzz);
-                pzz=0;
-            else
-                p = 1/starib*(vp - b(j-2)*pz);
-            end
-            pztemp = p;
-            p = 1/u(j)*(vz - b(j-1)*p - d(j-2)*pz);
-            pz = pztemp;   
-        else
-            
+        else        
             z(j) = norm(r0);
-            p = 1/starib*(vp);
-            pztemp = p;
-            p = 1/u(j)*(vz - b(j-1)*p);
-            pz = pztemp;
         end
         res(j) = b(j)*abs(z (j)/u(j));
         starib = d(j-1);
-        vp = vz;
-        vz = w/starib;
     end
-    if j >2
-        x = x + z(j-1)*pz;
+    
+    if j >3
+        tempp=p;
+        p = 1/u(j-1)*(vp - b(j-2)*p-d(j-3)*pz);
+        pz=tempp;
+        x = x + z(j-1)*p;
+    elseif j > 2
+        tempp=p;
+        p = 1/u(j-1)*(vp - b(j-2)*p);
+        pz=tempp;
+        x = x + z(j-1)*p;
+    else
+        p = 1/u(1)*vp;
+        x = x + z(1)*p;
+        pz=p;
     end
+    vp = vz;
+    vz = w/starib;
 end
 if length(z) > 1
+    p = 1/u(j)*(vp - b(j-1)*p-d(j-2)*pz);
     x = x + z(end)*p;
 end
-% display('z')
-% z(1:j)
-% display('l')
-% l(1:j)
-% display('u')
-% u(1:j)
-% display('d')
-% d(1:j)'
-% display('b')
-% b(1:j)'
-
 end

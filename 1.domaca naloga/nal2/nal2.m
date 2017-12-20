@@ -1,6 +1,6 @@
 %naloga2
 
-napaka = 1e-20;
+napaka = 1e-10;
 maxit = 200;
 
 load('DL1.mat');
@@ -40,7 +40,7 @@ load('Test1.mat');
 A = Problem.A;
 b = Problem.b;
 y5 = A\b;
-[x5,res5] = DLanczosPivot(A,b,zeros(length(b),1),1e-20,4);
+[x5,res5] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
 norm(x5-y5,Inf)
 norm(A*x5-b,Inf)
 
@@ -49,6 +49,6 @@ load('Test2.mat');
 A = Problem.A;
 b = Problem.b;
 y6 = A\b;
-[x6,res6] = DLanczosPivot(A,b,zeros(length(b),1),1e-20,6);
+[x6,res6] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
 norm(x6-y6,Inf)
 norm(A*x6-b,Inf)

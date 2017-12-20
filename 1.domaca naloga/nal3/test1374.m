@@ -7,7 +7,7 @@ load('1374')
 A = Problem.A;
 b = A*ones(length(A),1);
 
-n = 4;
+n = 5;
 ost = zeros(n,1);
 casi = zeros(n,1);
 koraki = zeros(n,1);
@@ -46,8 +46,15 @@ koraki(4) = ITER4;
 ost(4) = RELRES4;
 konvergenca(4) = FLAG4;
 
+tic;
+[X5,FLAG5,RELRES5,ITER5] = symmlq(A,b,napaka,N);
+cas=toc;
+casi(5) = cas;
+koraki(5) = ITER5;
+ost(5) = RELRES5;
+konvergenca(5) = FLAG5;
 
-disp('[gmres(0),bicg,qmr,bicgstab]')
+disp('[gmres(0),bicg,qmr,bicgstab,symmlq]')
 
 
 
