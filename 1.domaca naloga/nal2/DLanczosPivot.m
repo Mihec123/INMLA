@@ -64,7 +64,6 @@ for j = 2:maxit
         end;
     else
         display('pivotiranje')
-        disp(j)
         tempu = u(j-1);
         tempb = b(j-1);  
         b(j-1) = a(j);
@@ -83,7 +82,6 @@ for j = 2:maxit
             end
             z(j) = norm(r0);
         end
-        res(j-1) = starib*abs(z(j-1)/u(j-1));
         starib = d(j-1);
     end
     
