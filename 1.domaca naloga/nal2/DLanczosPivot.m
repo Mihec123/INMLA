@@ -52,16 +52,14 @@ for j = 2:maxit
     end
     
     if pivot == 0
-        prvi=false;
         l(j) = starib/u(j-1);
         u(j) = a(j) - l(j)*b(j-1);
         z(j) = -l(j).*z(j-1);
-        res(j) = b(j)*abs(z (j)/u(j));
-        if res(j)<tol 
+        res(j-1) = starib*abs(z(j-1)/u(j-1));
+        starib = b(j);
+        if res(j-1)<tol 
             return
         end;
-
-        starib = b(j);
     else
         display('pivotiranje')
         tempu = u(j-1);
@@ -79,7 +77,7 @@ for j = 2:maxit
         else        
             z(j) = norm(r0);
         end
-        res(j) = b(j)*abs(z (j)/u(j));
+        res(j-1) = starib*abs(z(j-1)/u(j-1));
         starib = d(j-1);
     end
     
@@ -100,6 +98,7 @@ for j = 2:maxit
     end
     vp = vz;
     vz = w/starib;
+    
 end
 if length(z) > 1
     p = 1/u(j)*(vp - b(j-1)*p-d(j-2)*pz);
