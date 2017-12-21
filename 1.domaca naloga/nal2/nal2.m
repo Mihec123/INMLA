@@ -1,54 +1,52 @@
 %naloga2
 
 napaka = 1e-10;
-maxit = 200;
+maxit = 5000;
 
 load('DL1.mat');
 A = Problem.A;
 b = Problem.b;
 y1 = A\b;
 [x1,res1] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
-norm(x1-y1,Inf)
-norm(A*x1-b,Inf)
+x = [1:1:length(res1)];
+ix = (res1==0);
+res1(ix) = [];
+x(ix) = [];
+figure;
+plot(x,log10(res1))
 
 load('DL2.mat');
 A = Problem.A;
 b = Problem.b;
 y2 = A\b;
 [x2,res2] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
-norm(x2-y2,Inf)
-norm(A*x2-b,Inf)
+x = [1:1:length(res2)];
+ix = (res2==0);
+res2(ix) = [];
+x(ix) = [];
+figure;
+plot(x,log10(res2))
 
 load('DL3.mat');
 A = Problem.A;
 b = Problem.b;
 y3 = A\b;
 [x3,res3] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
-norm(x3-y3,Inf)
-norm(A*x3-b,Inf)
+x = [1:1:length(res3)];
+ix = (res3==0);
+res3(ix) = [];
+x(ix) = [];
+figure;
+plot(x,log10(res3))
 
 load('DL4.mat');
 A = Problem.A;
 b = Problem.b;
 y4 = A\b;
 [x4,res4] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
-norm(x4-y4,Inf)
-norm(A*x4-b,Inf)
-
-%matrika kjer je potrebno pivotirati zapored
-load('Test1.mat');
-A = Problem.A;
-b = Problem.b;
-y5 = A\b;
-[x5,res5] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
-norm(x5-y5,Inf)
-norm(A*x5-b,Inf)
-
-%matrika kjer ne pivotiramo
-load('Test2.mat');
-A = Problem.A;
-b = Problem.b;
-y6 = A\b;
-[x6,res6] = DLanczosPivot(A,b,zeros(length(b),1),napaka,maxit);
-norm(x6-y6,Inf)
-norm(A*x6-b,Inf)
+x = [1:1:length(res4)];
+ix = (res4==0);
+res4(ix) = [];
+x(ix) = [];
+figure;
+plot(x,log10(res4))
