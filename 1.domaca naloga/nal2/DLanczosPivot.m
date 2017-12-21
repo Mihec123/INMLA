@@ -18,6 +18,7 @@ r0 = b - A*x0;
 vz = r0/norm(r0);  % vz = zadnji vektor iz matrike V
 x = x0;
 
+prvi=false;
 pivot = 0;
 d = zeros(maxit,1);
 
@@ -52,6 +53,7 @@ for j = 2:maxit
     end
     
     if pivot == 0
+        prvi=false;
         l(j) = starib/u(j-1);
         u(j) = a(j) - l(j)*b(j-1);
         z(j) = -l(j).*z(j-1);
@@ -62,6 +64,7 @@ for j = 2:maxit
         end;
     else
         display('pivotiranje')
+        disp(j)
         tempu = u(j-1);
         tempb = b(j-1);  
         b(j-1) = a(j);
@@ -72,9 +75,12 @@ for j = 2:maxit
         u(j-1) = starib;     
         b(j) = - l(j)*b(j);
         z(j-1) = 0;
-        if j > 2
+        if j > 2 && prvi == false
             z(j) = -sum(l(max(j-pivot,2):j).*z(max(j-1-pivot,1):j-1));
-        else        
+        else
+            if j == 2
+                prvi = true;
+            end
             z(j) = norm(r0);
         end
         res(j-1) = starib*abs(z(j-1)/u(j-1));
