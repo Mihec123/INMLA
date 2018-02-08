@@ -1,0 +1,9 @@
+B = 5.45;
+C = 2;
+Du=0.004;
+Dv = 0.008;
+n = 10;
+N = 2*n^2;
+h = 1/(n+1);
+L =0.5;
+[ y,it,flag] = bisekciaj(@(x) meja(@(L) A(L,B,C,Du,Dv,n),x),0.5,1,50,1e-3)
