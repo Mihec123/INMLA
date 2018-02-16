@@ -1,6 +1,7 @@
 function [y] = mnozenjeSfunkcijoA(x,alfa,n,Q)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%mnozenje s funkcijo A poteka tako da, podamo parameter
+%alfa in Q kjer je Q matrika uporabljena pri mnozenju z A
+%zaradi enostavnosti podamo še parameter n, ki pove veliksot matrike A
 e = ones(1,n);
 stolpec_nicel = ~any(Q);
 indeksi = find(stolpec_nicel);

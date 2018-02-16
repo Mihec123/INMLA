@@ -1,6 +1,5 @@
 function [ A] = A(L,B,C,Du,Dv,n)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%Generiramo jacobijevo matriko pri parametrih L,B,C,Du,Dv,n
 
 N = 2*n^2;
 A = zeros(N);

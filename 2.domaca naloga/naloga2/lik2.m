@@ -1,6 +1,6 @@
 function [G] = lik2(n)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%funkcija lik2(n) dobi parameter n, ki pove koliko delilnih tock ima
+%tretina intervala. Celotna velikost dobljene matrike G bo enaka 3*n-2
 
 G = zeros(3*n-2);
 st=1;

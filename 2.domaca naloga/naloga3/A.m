@@ -1,8 +1,11 @@
 function [G,A] = A(m)
-
+%funkcija A generira incidencno matriko verjetnosti prehodov. V G(i,j) je
+%tako spravljena vrednost prehoda iz A(i,:) v A(j,:), kjer je A matrika
+%generirana s funkcijo matrika
 A = matrika(m);
 G = sparse(0.5*m*(m+1),0.5*m*(m+1));
 for i= 1:length(A)
+    stevilo = 0;
     for j = 1:length(A)
         el1 = A(i,1);
         el2 = A(i,2);
@@ -34,7 +37,11 @@ for i= 1:length(A)
                     verjetnost = verjetnost/2;
                 end
             end
+            stevilo = stevilo +1;
             G(i,j) = verjetnost;
+            if stevilo > 3
+                break
+            end
         end
     end
 end

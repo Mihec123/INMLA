@@ -1,4 +1,4 @@
-function [V,H]=Arnoldi(A,r0,k,delta)
+function [V,H,k]=Arnoldi(A,r0,k,delta)
 
 % [V,H]=Arnoldi(A,r0,k,eps) naredi k korakov osnovnega Arnoldijevega
 % algoritma z zacetnim vektorjem r0 in vrne ortonormirano bazo za 
@@ -29,6 +29,7 @@ for j = 1:k
     end
     H(j+1,j) = t;
     V(:,j+1) = z/H(j+1,j);
+end
 end
 
 

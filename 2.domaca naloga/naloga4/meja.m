@@ -1,6 +1,7 @@
 function [ y ] = meja(funkcija,L)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%funkcija meja vrne 1 ce je najvecja realna vrednost matrike podane s
+%funkcijo funkcija in parametrom L vecja kot 0. V nasprotnem primeru vrne
+%meja -1.
 
 [v,d] = eigs(funkcija(L),1,'LR');
 

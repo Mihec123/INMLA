@@ -7,10 +7,10 @@ D1 = delsq(L1);
 D2 = delsq(L2);
 
 e1 = ones(length(D1),1);
-b=(2*h^2)*e1; 
+b=e1; 
 
-u1 = D1\e1;
-u2 = D2\e1;
+u1 = (D1-(2*h^2)*eye(length(D1)))\e1;
+u2 = (D2-(2*h^2)*eye(length(D2)))\e1;
 
 U1 = L1;
 U1(L1>0) = full(u1(L1(L1>0)));

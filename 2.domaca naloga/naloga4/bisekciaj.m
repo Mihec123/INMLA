@@ -1,6 +1,5 @@
 function [ y,it,flag ] = bisekciaj(funkcija,a,b,maxit,eps)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%klasicna metoda bisekcije
 
 i=0;
 y = 0;
