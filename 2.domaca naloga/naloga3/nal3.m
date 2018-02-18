@@ -11,6 +11,9 @@ for i = 1:m
     maxvr1(i,3:4) = M1(y,:);
 end
 
+figure;
+mesh(G1);
+
 [G2,M2] = Prehodna(100);
 [v2,lv2] =eigs(G2',1,1);
 
@@ -24,15 +27,16 @@ for i = 1:m
     maxvr2(i,3:4) = M2(y,:);
 end
 
-[G1,M1] = Prehodna(1000);
-[v3,lv3] =eigs(G3',1,1);
+[G,M] = Prehodna(1000);% rezultat tega shranjen v matrika1000ok.mat
+%load('matrika1000ok.mat')
+[v3,lv3] =eigs(G',1,1);
 
-vr3 = max(G3(find(G3)));
-indeksi = find(G3 == vr3);
+vr3 = max(G(find(G)));
+indeksi = find(G == vr3);
 m = length(indeksi);
 maxvr3 = zeros(m,4);
 for i = 1:m
-    [x,y] = indeks(indeksi(i),length(M3));
-    maxvr3(i,1:2) = M3(x,:);
-    maxvr3(i,3:4) = M3(y,:);
+    [x,y] = indeks(indeksi(i),length(M));
+    maxvr3(i,1:2) = M(x,:);
+    maxvr3(i,3:4) = M(y,:);
 end

@@ -18,7 +18,7 @@ for i= 1:length(A)
         else
             if el1-el3 == 1
                 verjetnost = (el1+el2)/m;%gremo v i-1,j
-                if el2>1
+                if el2>0
                     verjetnost = verjetnost/2;
                 end
             elseif el1 -el3 == -1
@@ -28,7 +28,7 @@ for i= 1:length(A)
                 end
             elseif el2-el4 ==1
                 verjetnost = (el1+el2)/m;%gremo v i,j-1
-                if el1>1
+                if el1>0
                     verjetnost = verjetnost/2;
                 end
             else

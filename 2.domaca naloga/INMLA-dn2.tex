@@ -42,15 +42,66 @@ Naloga je bila samostojno reševana s programom Matlab 2016a.
 Množenje z matriko A implementiramo tako, da računamo produkt
 $$Ax = \alpha Qx + 1/ne(d^tx) + (1-\alpha)1/nee^{T}x.$$
 Na ta način ne potrebujemo polne matrike A, da bi izračunali produkt. Dominantne lastne vrednosti izračunamo s pomočjo potenčne in Arnoldijeve metode, ki smo jih implementirali na vajah.
-Opazimo, da so ne glede na izbiro parametra $\alpha$ dominantne lastne vrednosti vedno $1$. Ne potenčna ne arnoldijeva metoda ne skonvergirata niti do natančnosti $10^{-3}$ po $150$ korakih. A vidimo, da pri Arnoldijevi metodi potrebujemo manj korakov, a je le ta počasnejša. Najbolj natančna in ekonomična pa je vgrajena matlabova metoda.
+Opazimo, da so ne glede na izbiro parametra $\alpha$ dominantne lastne vrednosti vedno $1$. Ne potenčna ne arnoldijeva metoda ne skonvergirata niti do natančnosti $10^{-3}$ po $150$ korakih. Vidimo, da pri Arnoldijevi metodi potrebujemo manj korakov, a je le ta počasnejša. Najbolj natančna in ekonomična pa je vgrajena matlabova metoda.
 
 \section{2.naloga}
 
-Območje $(0,3)\times(0,3)$ skrčimo na $(0,1)\times(0,1)$ tako, da $(0,1)\times(0,1)$ razdelimo na $9$ delov. V vsakem delu posebaj izberemo $n$ delilnih točk. To je ekvivalentno temu, da imamo v notranjosti $n-2$ točk na robu pa $2$ točki. Ko zlepimo vseh 9 kosov skupaj dobimo območje v vsako smer $3n-2$ delilnih točk, ker se v notranjih na robu odsekov $(i,i+1)\times(j,j+1)$ delilne točke ujemajo. Funkciji lik1(n) in lik2(n) tako vrneta matriki oštevilčenih točk velikosti $(3n-2)^2$. S pomočjo funkcije delsq potem rešimo diferencialni enačbi. Pri primerjavi najmanjših lastnih vrednosti vidimo da se le te razlikujejo za manj kot $10^{-10}$.
+Območje $(0,3)\times(0,3)$ skrčimo na $(0,1)\times(0,1)$ tako, da $(0,1)\times(0,1)$ razdelimo na $9$ delov. V vsakem delu posebaj naredimo mrežo z $n$ točkami. To je ekvivalentno temu, da imamo v notranjosti $n-2$ točk na robu pa $2$ točki. Ko zlepimo vseh 9 kosov skupaj dobimo mrežo, ki ima v vsaki smeri $3n-2$ delilnih točk, ker se v notranjih na robu odsekov $(i,i+1)\times(j,j+1)$ točke ujemajo. Funkciji lik1(n) in lik2(n) tako vrneta matriki oštevilčenih točk velikosti $(3n-2)^2$. S pomočjo funkcije delsq potem rešimo diferencialni enačbi. Pri primerjavi najmanjših lastnih vrednosti vidimo da se le te razlikujejo za manj kot $10^{-6}$.
+\newpage
+\begin{centering}
+\includegraphics[scale=0.4]{lastna1}
+\captionof{figure}{Lastna funkcija pri 5 najmanjši lastni vrednosti za lik1.}
+\end{centering}
 
+\begin{centering}
+\includegraphics[scale=0.4]{lastna2}
+\captionof{figure}{Lastna funkcija pri 5 najmanjši lastni vrednosti za lik2.}
+\end{centering}
+
+\newpage
 \section{3.naloga}
-Matriko A zapišemo kot incidenčno matriko povezav, kjer $(i,j)-ti$ element pomeni verjetnost prehoda iz $i-tega$ v $j-to$ vozlišče. Pri čemer so vozlišča urejena po stolpcih na naslednji način
+Matriko A zapišemo kot incidenčno matriko povezav, kjer $(i,j)-ti$ element pomeni verjetnost prehoda iz $i-tega$ v $j-to$ vozlišče. Pri čemer so vozlišča urejena v stolpcu na naslednji način
 $$(0,0),\ldots, (0,m-1), (1,0), \ldots, (1,m-2), \ldots$$
+Pri $m=10$ kot rešitev tako dobimo največjo verjetnost $0.9$.
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{llll}
+i-koordinata & j-koordinata & i-kordinata kamor gremo & j-koordinata kamor gremo \\
+0            & 9            & 0                       & 8                        \\
+9            & 0            & 8                       & 0                       
+\end{tabular}
+\end{table}
+
+Pri $m=100$ kot rešitev tako dobimo največjo verjetnost $0.99$.
+
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{llll}
+i-koordinata & j-koordinata & i-kordinata kamor gremo & j-koordinata kamor gremo \\
+0            & 99            & 0                       & 98                        \\
+99            & 0            & 98                       & 0                       
+\end{tabular}
+\end{table}
+
+Pri $m=1000$ kot rešitev tako dobimo največjo verjetnost $0.999$.
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{llll}
+i-koordinata & j-koordinata & i-kordinata kamor gremo & j-koordinata kamor gremo \\
+0            & 999            & 0                       & 998                        \\
+999            & 0            & 998                       & 0                       
+\end{tabular}
+\end{table}
+
+Opazimo, da je največja verjetnost prehoda ravno v levem zgornjem in desnem spodnjem kotu.
+
+\begin{centering}
+\includegraphics[scale=0.4]{G1}
+\captionof{figure}{Graf verjetnosti prehoda iz posameznih točk za m=10.}
+\end{centering}
 
 \section{4.naloga}
 
